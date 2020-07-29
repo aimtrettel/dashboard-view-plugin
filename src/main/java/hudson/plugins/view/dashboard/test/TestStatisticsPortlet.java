@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 
 /**
  * Portlet that presents a grid of test result data with summation
- * 
+ *
  * @author Peter Hayes
  */
 public class TestStatisticsPortlet extends DashboardPortlet {
@@ -28,6 +28,7 @@ public class TestStatisticsPortlet extends DashboardPortlet {
 	private String failureColor;
 	private boolean hideZeroTestProjects;
 	private boolean useAlternatePercentagesOnLimits;
+	private boolean showLastBuildStatistics;
 
 	@DataBoundConstructor
 	public TestStatisticsPortlet(String name, final boolean hideZeroTestProjects, String successColor, String failureColor, String skippedColor, boolean useBackgroundColors) {
@@ -36,7 +37,8 @@ public class TestStatisticsPortlet extends DashboardPortlet {
 		this.failureColor = failureColor;
 		this.skippedColor = skippedColor;
 		this.useBackgroundColors = useBackgroundColors;
-        this.hideZeroTestProjects = hideZeroTestProjects;
+		this.hideZeroTestProjects = hideZeroTestProjects;
+    //this.showLastBuildStatistics = showLastBuildStatistics;
 	}
 
 	public TestResultSummary getTestResultSummary(Collection<TopLevelItem> jobs) {
@@ -60,7 +62,7 @@ public class TestStatisticsPortlet extends DashboardPortlet {
 		}
 		return df.format(val);
 	}
-	
+
 	public boolean isUseBackgroundColors() {
 		return useBackgroundColors;
 	}
@@ -77,18 +79,20 @@ public class TestStatisticsPortlet extends DashboardPortlet {
 		return skippedColor;
 	}
 
-	@DataBoundSetter
+  public boolean isShowLastBuildStatistics() { return showLastBuildStatistics; }
+
+  @DataBoundSetter
 	public void setUseAlternatePercentagesOnLimits(boolean useAlternatePercentagesOnLimits) {
 		this.useAlternatePercentagesOnLimits = useAlternatePercentagesOnLimits;
 	}
 	public boolean isUseAlternatePercentagesOnLimits() {
 		return useAlternatePercentagesOnLimits;
 	}
-	
+
 	public String getRowColor(TestResult testResult) {
 		return testResult.success == testResult.tests ? successColor : failureColor;
 	}
-	
+
 	public String getTotalRowColor(List<TestResult> testResults) {
 		for(TestResult testResult : testResults) {
 			if(testResult.success != testResult.tests) {
@@ -97,11 +101,11 @@ public class TestStatisticsPortlet extends DashboardPortlet {
 		}
 		return successColor;
 	}
-	
+
 	public void setUseBackgroundColors(boolean useBackgroundColors) {
 		this.useBackgroundColors = useBackgroundColors;
 	}
-	
+
 	public void setSkippedColor(String skippedColor) {
 		this.skippedColor = skippedColor;
 	}
